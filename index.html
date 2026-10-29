@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Treatment System Maintenance Record - HDU SGH</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .header img {
+      width: 110px;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 50%;
+    }
+    h1 {
+      color: #007bff;
+      font-size: 1.7em;
+      margin: 0 0 5px 0;
+    }
+    h2 {
+      color: #6c757d;
+      font-size: 1.05em;
+      font-weight: normal;
+      margin: 0;
+    }
+    h3 {
+      margin-top: 25px;
+      color: #343a40;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 6px;
+      font-size: 1.15em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge-count {
+      background: #007bff;
+      color: #fff;
+      font-size: 0.75em;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 13.5px;
+      color: #333;
+    }
+    select {
+      width: 100%;
+      padding: 9px 11px;
+      margin-bottom: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+      background-color: #fff;
+    }
+    select:focus {
+      outline: none;
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.2);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+    .item-card {
+      background: #fdfdfd;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin-bottom: 15px;
+    }
+    .item-card-header {
+      font-weight: 700;
+      color: #007bff;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .asset-row {
+      margin-bottom: 12px;
+    }
+    .asset-val {
+      font-size: 14px;
+      color: #212529;
+      margin-top: 2px;
+    }
+    .asset-divider {
+      border: 0;
+      border-top: 1px dashed #cbd5e1;
+      margin: 15px 0;
+    }
+
+    /* Data Tables */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 10px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #dee2e6;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+    .no-data {
+      text-align: center;
+      padding: 20px;
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    /* Document Links */
+    .doc-link-pill {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0284c7;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      border: 1px solid #bae6fd;
+      white-space: nowrap;
+    }
+    .doc-link-pill:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Actions */
+    .action-btns {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    .btn-print {
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      width: 70%;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+    .btn-print:hover { background-color: #0056b3; }
+
+    .btn-cancel {
+      background-color: #6c757d;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      width: 30%;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+    .btn-cancel:hover { background-color: #5a6268; }
+
+    #message-area {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 4px;
+      text-align: center;
+      display: none;
+      font-weight: bold;
+    }
+    .error { background-color: #ffe6e6; color: red; border: 1px solid red; }
+    .normal { background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
+
+    .footer {
+      margin-top: 40px;
+      padding-top: 15px;
+      border-top: 1px solid #ced4da;
+      font-size: 0.8em;
+      color: #6c757d;
+      text-align: center;
+    }
+
+    /* Print-Only Optimization */
+    @media print {
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: #000000;
+        font-size: 11pt;
+      }
+      .container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .no-print, .action-btns, #message-area {
+        display: none !important;
+      }
+      .item-card {
+        border: 1px solid #666;
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+      .table-responsive {
+        border: none;
+        overflow: visible;
+      }
+      table {
+        font-size: 9pt;
+        border: 1px solid #333;
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      th, td {
+        border: 1px solid #333;
+        padding: 6px 8px;
+        color: #000;
+      }
+      th {
+        background-color: #eee !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .doc-link-pill {
+        border: none;
+        background: none;
+        color: #000;
+        padding: 0;
+        font-weight: normal;
+        text-decoration: underline;
+      }
+      .doc-link-pill::after {
+        content: " (PDF)";
+      }
+      .footer {
+        margin-top: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .action-btns { flex-direction: column; }
+      .btn-print, .btn-cancel { width: 100% !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <img src="https://lh3.googleusercontent.com/d/1tCDAMimy_b0x9kRmWNyYMn4voR9Ynr0J" alt="Logo">
+    <h1>WATER TREATMENT SYSTEM MAINTENANCE RECORD</h1>
+    <h2>Haemodialysis Unit, Sarawak General Hospital</h2>
+  </div>
+
+  <!-- Selection Controls (Hidden during printing) -->
+  <div class="grid-2 no-print">
+    <div>
+      <label for="selYear">Select Year</label>
+      <select id="selYear" onchange="triggerLoad()">
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+        <option value="2030">2030</option>
+      </select>
+    </div>
+    <div>
+      <label for="selRo">Select RO System</label>
+      <select id="selRo" onchange="triggerLoad()">
+        <option value="">-- Choose RO System --</option>
+        <option value="RO 01">RO 01</option>
+        <option value="RO 02">RO 02</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Structured Asset Details Card -->
+  <div id="assetSection" class="item-card" style="display: none; background: #f8fafc; margin-top: 10px;">
+    <div class="item-card-header">Asset Details</div>
+
+    <div class="asset-row" style="font-size: 15px;">
+      <b>RO No.:</b> <span id="astRo" style="font-weight: bold; color: #007bff;">-</span>
+    </div>
+
+    <div class="grid-3 asset-row">
+      <div>
+        <b>Brand:</b>
+        <div class="asset-val" id="astBrand">-</div>
+      </div>
+      <div>
+        <b>Model:</b>
+        <div class="asset-val" id="astModel">-</div>
+      </div>
+      <div>
+        <b>Serial No.:</b>
+        <div class="asset-val" id="astSerial">-</div>
+      </div>
+    </div>
+
+    <div class="grid-2 asset-row">
+      <div>
+        <b>KEW.PA No.:</b>
+        <div class="asset-val" id="astAsset">-</div>
+      </div>
+      <div>
+        <b>ASIS No.:</b>
+        <div class="asset-val" id="astAssis">-</div>
+      </div>
+    </div>
+
+    <div class="grid-2 asset-row" style="margin-bottom: 0;">
+      <div>
+        <b>Year made:</b> <span id="astYear" style="color:#212529;">-</span>
+      </div>
+      <div>
+        <b>Status:</b> <span id="astStatus" style="color:#212529;">-</span>
+      </div>
+    </div>
+
+    <hr class="asset-divider">
+
+    <div class="grid-2 asset-row" style="margin-bottom: 0;">
+      <div>
+        <b>Last Maintenance Date/Time:</b> <br><span id="astLastMaintDate" style="color:#212529; font-weight:600;">-</span>
+      </div>
+      <div>
+        <b>Last Logged By:</b> <br><span id="astLastMaintBy" style="color:#212529; font-weight:600;">-</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tables Section -->
+  <div id="dataSection" style="display: none;">
+    
+    <!-- PPM Table -->
+    <h3>
+      <span>Planned Preventive Maintenance (PPM) &bull; <span id="ppmYearBadge">2026</span></span>
+      <span class="badge-count" id="ppmCount">0 Records</span>
+    </h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 110px;">Date & Time</th>
+            <th style="width: 140px;">Maintenance By</th>
+            <th style="width: 100px;">Task No.</th>
+            <th style="width: 115px;">Start Date/Time</th>
+            <th style="width: 115px;">Complete Date/Time</th>
+            <th>Action Taken</th>
+            <th style="width: 120px;">Logged By</th>
+            <th style="width: 130px;">Upload Link</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyPpm">
+          <tr><td colspan="8" class="no-data">No PPM records recorded for this year.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CM Table -->
+    <h3 style="margin-top: 35px;">
+      <span>Corrective Maintenance (CM) &bull; <span id="cmYearBadge">2026</span></span>
+      <span class="badge-count" id="cmCount" style="background:#dc3545;">0 Records</span>
+    </h3>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 110px;">Date & Time</th>
+            <th style="width: 140px;">Maintenance By</th>
+            <th style="width: 100px;">Task No.</th>
+            <th style="width: 115px;">Start Date/Time</th>
+            <th style="width: 115px;">Complete Date/Time</th>
+            <th>Action Taken</th>
+            <th style="width: 120px;">Logged By</th>
+            <th style="width: 130px;">Upload Link</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyCm">
+          <tr><td colspan="8" class="no-data">No CM records recorded for this year.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-btns no-print">
+      <button type="button" class="btn-print" onclick="window.print()">🖨️ Print Maintenance Record</button>
+      <button type="button" class="btn-cancel" onclick="resetViewer()">Cancel / Reset</button>
+    </div>
+
+  </div>
+
+  <div id="message-area" class="no-print"></div>
+
+  <div class="footer">
+    &copy; Designed and developed by PPP Zulfadlie bin Janie<br>
+    for Haemodialysis Unit, Sarawak General Hospital
+  </div>
+</div>
+
+<script>
+  const SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbzjTF1xnQbgVw5P77C75KttOU04biG4DFKnIgQC7YOiI5EshGcCe0zugT6uWRIMU8HB8w/exec";
+
+  function triggerLoad() {
+    const ro = document.getElementById('selRo').value;
+    const yr = document.getElementById('selYear').value;
+
+    if (!ro) {
+      document.getElementById('assetSection').style.display = "none";
+      document.getElementById('dataSection').style.display = "none";
+      hideMessage();
+      return;
+    }
+
+    document.getElementById('ppmYearBadge').textContent = yr;
+    document.getElementById('cmYearBadge').textContent = yr;
+
+    showMessage(`Loading ${yr} maintenance history for ${ro}...`, "normal");
+    fetch(SCRIPT_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "getYearlyMaintenanceRecords",
+        payload: { roNo: ro, year: yr }
+      })
+    })
+    .then(r => r.json())
+    .then(res => {
+      hideMessage();
+      if (res.success) {
+        populateAssetBlock(res.asset, res.lastMaintenance);
+        renderTableRows("tbodyPpm", "ppmCount", res.ppmRecords);
+        renderTableRows("tbodyCm", "cmCount", res.cmRecords);
+        document.getElementById('dataSection').style.display = "block";
+      } else {
+        showMessage("Error loading records: " + res.error, "error");
+      }
+    })
+    .catch(err => showMessage("Connection error: " + err, "error"));
+  }
+
+  function populateAssetBlock(asset, lastMaint) {
+    document.getElementById('astRo').textContent = asset.roNo;
+    document.getElementById('astBrand').textContent = asset.brand;
+    document.getElementById('astModel').textContent = asset.model;
+    document.getElementById('astSerial').textContent = asset.serialNo;
+    document.getElementById('astAsset').textContent = asset.assetNo;
+    document.getElementById('astAssis').textContent = asset.assisNo;
+    document.getElementById('astYear').textContent = asset.yearMade;
+    document.getElementById('astStatus').textContent = asset.status;
+
+    document.getElementById('astLastMaintDate').textContent = lastMaint ? lastMaint.date : "No records found";
+    document.getElementById('astLastMaintBy').textContent = lastMaint ? lastMaint.by : "-";
+
+    document.getElementById('assetSection').style.display = "block";
+  }
+
+  function renderTableRows(tbodyId, badgeId, rows) {
+    const tbody = document.getElementById(tbodyId);
+    const badge = document.getElementById(badgeId);
+    tbody.innerHTML = "";
+
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" class="no-data">No records found for this year.</td></tr>`;
+      badge.textContent = "0 Records";
+      return;
+    }
+
+    badge.textContent = `${rows.length} Record${rows.length > 1 ? 's' : ''}`;
+
+    rows.forEach(r => {
+      const tr = document.createElement("tr");
+
+      let linksHtml = "-";
+      if (r.links && r.links.length > 0) {
+        linksHtml = r.links.map(l => `<a href="${l.url}" target="_blank" class="doc-link-pill">${l.label}</a>`).join("");
+      }
+
+      tr.innerHTML = `
+        <td><b>${r.timestamp}</b></td>
+        <td>${r.maintBy}</td>
+        <td><code>${r.taskNo}</code></td>
+        <td>${r.startTime}</td>
+        <td>${r.completeTime}</td>
+        <td>${r.actionTaken}</td>
+        <td>${r.loggedBy}</td>
+        <td>${linksHtml}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function resetViewer() {
+    document.getElementById('selRo').value = "";
+    document.getElementById('selYear').value = "2026";
+    document.getElementById('assetSection').style.display = "none";
+    document.getElementById('dataSection').style.display = "none";
+    hideMessage();
+  }
+
+  function showMessage(text, type) {
+    const msg = document.getElementById('message-area');
+    msg.style.display = "block";
+    msg.textContent = text;
+    msg.className = type === "error" ? "error" : (type === "success" ? "success" : "normal");
+  }
+
+  function hideMessage() {
+    document.getElementById('message-area').style.display = "none";
+  }
+</script>
+
+</body>
+</html>
